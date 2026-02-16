@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>2026 New Year Card | Rose Quartz & Serenity</title>
+  <style>
+    :root{
+      --rose-quartz:#F7CAC9;
+      --serenity:#91A8D0;
+      --rose-quartz-soft:rgba(247,202,201,.4);
+      --serenity-soft:rgba(145,168,208,.4);
+      --glass-bg:rgba(255,255,255,.7);
+      --text-color:#5d6a7d;
+      --title-color:#7d8ea5;
+      --font-rounded: ui-rounded, "SF Pro Rounded", "Apple SD Gothic Neo", "PingFang TC", system-ui, -apple-system, sans-serif;
+      --transition: all .5s cubic-bezier(.165,.84,.44,1);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{
+      background:linear-gradient(135deg,var(--rose-quartz) 0%,var(--serenity) 100%);
+      background-attachment:fixed;
+      font-family:var(--font-rounded);
+      color:var(--text-color);
+      overflow-x:hidden;
+      min-height:100vh;
+      line-height:1.8;
+    }
+    body.no-scroll{overflow:hidden}
+
+    /* Background Particles */
+    #particle-container{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      pointer-events:none;z-index:1;
+    }
+    .star{
+      position:absolute;background:#fff;border-radius:50%;
+      opacity:.3;animation:twinkle linear infinite;
+    }
+    @keyframes twinkle{
+      0%,100%{transform:scale(1);opacity:.2}
+      50%{transform:scale(1.5);opacity:.6}
+    }
+
+    /* Overlay */
+    .overlay{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      background:linear-gradient(135deg,#fff 0%,var(--rose-quartz) 100%);
+      z-index:2000;display:flex;justify-content:center;align-items:center;
+      transition:opacity .6s ease, visibility .6s;
+    }
+    .overlay-card{
+      background:#fff;padding:40px;border-radius:32px;
+      box-shadow:0 20px 50px rgba(0,0,0,.05);
+      text-align:center;max-width:320px;width:85%;
+      position:relative;overflow:hidden;
+    }
+    .card-accent-line{
+      position:absolute;top:0;left:0;width:100%;height:8px;
+      background:linear-gradient(90deg,var(--rose-quartz),var(--serenity));
+    }
+    .main-title{
+      font-size:3rem;color:var(--serenity);font-weight:800;
+      margin-bottom:5px;
+    }
+    .subtitle{
+      font-size:1rem;color:#aaa;margin-bottom:10px;
+      letter-spacing:2px;text-transform:uppercase;
+    }
+    .to-line{
+      margin:0 0 22px;
+      font-size:1.05rem;color:#7d8ea5;font-weight:700;
+      letter-spacing:.5px;
+    }
+    .play-btn{
+      padding:15px 45px;border:none;background:var(--serenity);
+      color:#fff;border-radius:50px;font-size:1.1rem;cursor:pointer;
+      box-shadow:0 10px 25px var(--serenity-soft);transition:var(--transition);
+    }
+    .play-btn:active{transform:scale(.95)}
+    .retry-msg{color:#ff6b6b;font-size:.9rem;margin-top:15px}
+
+    /* Main Content Layout */
+    .main-content{
+      position:relative;z-index:10;max-width:800px;
+      margin:0 auto;padding:60px 20px;opacity:0;
+      transform:translateY(30px);
+      transition:opacity 1s ease, transform 1s ease;
+    }
+    .main-content.visible{opacity:1;transform:translateY(0)}
+    .hero-section{text-align:center;margin-bottom:60px}
+    .hero-title{
+      font-size:3.5rem;color:#fff;line-height:1;
+      text-shadow:0 4px 15px rgba(0,0,0,.1);
+    }
+    .hero-year{font-size:1.2rem;color:#fff;letter-spacing:5px;opacity:.8}
+
+    .glass-card{
+      background:var(--glass-bg);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border-radius:28px;
+      padding:40px 30px;
+      box-shadow:0 10px 40px rgba(0,0,0,.05);
+      margin-bottom:50px;position:relative;overflow:hidden;
+      border:1px solid rgba(255,255,255,.4);
+    }
+    .section-header{text-align:center;margin-bottom:30px}
+    .section-title{
+      font-size:1.6rem;color:var(--title-color);
+      margin-bottom:8px;font-weight:700;
+    }
+    .section-subtitle{
+      font-size:.9rem;color:#8fa1b8;letter-spacing:1px;
+    }
+
+    /* Greeting text tweaks: keep your text intact, just improve readability */
+    .greeting-text{
+      font-size:1.08rem;
+      white-space:pre-wrap;
+      text-align:left;
+      color:#555;
+      margin:0 auto 26px;
+      line-height:2;
+      max-width: 44ch;
+    }
+    @media (max-width:420px){
+      .greeting-text{max-width: 38ch;}
+    }
+
+    .signature{
+      text-align:center;font-weight:700;color:var(--serenity);
+      font-size:1.3rem;margin-top:18px;
+    }
+
+    /* Grid System */
+    .grid-container{display:grid;gap:20px;margin-bottom:60px}
+    .members-grid{grid-template-columns:repeat(2,1fr)}
+    @media (min-width:600px){.members-grid{grid-template-columns:repeat(4,1fr)}}
+    .bias-grid{grid-template-columns:repeat(1,1fr)}
+    @media (min-width:600px){.bias-grid{grid-template-columns:repeat(2,1fr)}}
+
+    .grid-item{
+      background:#fff;border-radius:24px;padding:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,.03);
+      cursor:pointer;transition:var(--transition);
+    }
+    .grid-item:hover{transform:translateY(-8px);box-shadow:0 15px 35px rgba(0,0,0,.1)}
+    .img-box{
+      width:100%;aspect-ratio:1;border-radius:16px;
+      overflow:hidden;background:#f8f9fa;position:relative;
+    }
+    .img-box img{width:100%;height:100%;object-fit:cover;transition:var(--transition)}
+    .grid-item:hover .img-box img{transform:scale(1.1)}
+    .item-name{
+      padding:15px 5px 8px;text-align:center;
+      font-size:.95rem;font-weight:600;color:var(--text-color);
+    }
+
+    /* UI Controls & Lightbox */
+    .music-toggle{
+      position:fixed;bottom:30px;right:30px;
+      width:60px;height:60px;border-radius:50%;
+      background:#fff;border:none;
+      box-shadow:0 10px 30px rgba(0,0,0,.1);
+      z-index:100;cursor:pointer;
+      display:flex;justify-content:center;align-items:center;
+    }
+    .equalizer{display:flex;align-items:flex-end;gap:4px;height:20px}
+    .bar{width:4px;background:var(--serenity);border-radius:2px}
+    .music-toggle.playing .bar{animation:bar-dance .6s ease-in-out infinite alternate}
+    @keyframes bar-dance{from{height:4px}to{height:20px}}
+    .music-toggle.playing .bar:nth-child(2){animation-delay:.2s}
+    .music-toggle.playing .bar:nth-child(3){animation-delay:.4s}
+
+    .lightbox{
+      display:none;position:fixed;z-index:3000;left:0;top:0;
+      width:100%;height:100%;
+      background:rgba(255,255,255,.98);
+      backdrop-filter:blur(15px);
+      align-items:center;justify-content:center;
+    }
+    .lightbox-wrapper{text-align:center;max-width:90%}
+    .lightbox-content{
+      max-width:100%;max-height:70vh;border-radius:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.1);
+      margin-bottom:20px;
+    }
+    .lightbox-close{
+      position:absolute;top:30px;right:30px;
+      font-size:40px;color:var(--serenity);cursor:pointer;
+    }
+
+    .hidden{display:none !important}
+    .loader{
+      border:3px solid #f3f3f3;border-top:3px solid var(--serenity);
+      border-radius:50%;width:20px;height:20px;animation:spin 1s linear infinite;
+    }
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    .footer{
+      text-align:center;padding:60px 0;color:#fff;opacity:.8;font-size:.9rem;
+    }
+  </style>
+</head>
+<body class="no-scroll">
+  <div id="particle-container"></div>
+
+  <!-- Overlay -->
+  <div id="overlay" class="overlay">
+    <div class="overlay-card">
+      <div class="card-accent-line"></div>
+      <h1 class="main-title">2026</h1>
+      <p class="subtitle">New Year Blessing</p>
+      <p class="to-line">To <span id="to-nickname">倉鼠寶</span></p>
+
+      <div id="play-btn-wrapper">
+        <button id="play-btn" class="play-btn">
+          <span class="btn-text">Open Card</span>
+          <div class="loader hidden"></div>
+        </button>
+      </div>
+      <p id="retry-msg" class="retry-msg hidden">Please tap again to play</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content hidden">
+    <header class="hero-section">
+      <h1 class="hero-title">Happy New Year</h1>
+      <p class="hero-year">2026</p>
+    </header>
+
+    <section class="card-section">
+      <div class="glass-card">
+        <div class="card-accent-line"></div>
+        <div class="section-header">
+          <h2 class="section-title">A Heartfelt Message</h2>
+          <p class="section-subtitle" id="message-subtitle">Dear Chia Wei babe</p>
+        </div>
+
+        <!-- Your text: kept EXACTLY as provided (no edits) -->
+        <div class="greeting-text" id="greeting-text"></div>
+
+        <div class="signature" id="signature">From 紂王思榆</div>
+      </div>
+    </section>
+
+    <section class="card-section">
+      <div class="section-header">
+        <h2 class="section-title">最愛的成員們，為你送上 2026 的祝福</h2>
+        <p class="section-subtitle">謝謝你陪我走到這裡，2026 也一起更好。</p>
+      </div>
+      <div id="bias-grid" class="grid-container bias-grid"></div>
+    </section>
+
+    <section class="card-section">
+      <div class="section-header">
+        <h2 class="section-title">SEVENTEEN 全體，為你送上 2026 的祝賀</h2>
+        <p class="section-subtitle">願你這一年平安、被愛、也更相信自己。</p>
+      </div>
+      <div id="members-grid" class="grid-container members-grid"></div>
+    </section>
+
+    <footer class="footer">
+      <p>© 2026 Rose Quartz & Serenity Edition</p>
+      <p>Always Here With You</p>
+    </footer>
+  </main>
+
+  <!-- Music Toggle -->
+  <button id="music-toggle" class="music-toggle hidden" aria-label="Toggle music">
+    <div class="equalizer" aria-hidden="true">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </button>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+    <span class="lightbox-close" aria-label="Close">&times;</span>
+    <div class="lightbox-wrapper">
+      <img class="lightbox-content" id="lightbox-img" alt="preview" />
+      <div id="lightbox-caption" style="font-weight:bold;color:#5d6a7d;"></div>
+    </div>
+  </div>
+
+  <script>
+    const config = {
+      toNickname: "倉鼠寶",
+      toName: "家葦",
+      fromName: "思榆",
+
+      // Your card message (kept EXACTLY as provided; no edits)
+      greeting: `消失了一年還能不放開我的人，非常的屈指可數。恭喜你留下來了，也謝謝你留下來。
+為了表達感謝與歉意，我把我手上堪能稱之為「禮物」的東西一一整理出來。你知道企鵝會從身邊挑一顆最合適的小石頭，送給真誠珍惜的朋友嗎？
+我把我身邊的「小石頭」整理好，當作不起眼的新年禮物，冀望我們未來能更好，然後我能再次開始正常社交。`,
+
+      members: ["S.Coups","Jeonghan","Joshua","Jun","Hoshi","Wonwoo","Woozi","DK","Mingyu","The8","Seungkwan","Vernon","Dino"],
+      bias: [
+        { ko: "권순영", en: "Hoshi" },
+        { ko: "전원우", en: "Wonwoo" },
+        { ko: "이지훈", en: "Woozi" },
+        { ko: "김민규", en: "Mingyu" },
+        { ko: "이석민", en: "DK" },
+        { ko: "부승관", en: "Seungkwan" }
+      ]
+    };
+
+    // SVG Placeholder Generator
+    function getPlaceholder(label, c1 = "#F7CAC9", c2 = "#91A8D0") {
+      const svg = `<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="${c1}"/>
+            <stop offset="100%" stop-color="${c2}"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="400" fill="url(#g)"/>
+        <text x="50%" y="50%" fill="white" font-family="sans-serif" font-size="28" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${label}</text>
+      </svg>`;
+      return `data:image/svg+xml;base64,${btoa(svg)}`;
+    }
+
+    // Web Audio
+    let audioCtx, mainGain;
+    function initAudio(){
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      mainGain = audioCtx.createGain();
+      mainGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      mainGain.connect(audioCtx.destination);
+
+      const frequencies = [261.63, 329.63, 392.00, 523.25]; // C chord
+      frequencies.forEach(f => {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+        g.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        osc.connect(g);
+        g.connect(mainGain);
+        osc.start();
+      });
+    }
+    function toggleAudio(play){
+      if(!audioCtx) initAudio();
+      if(audioCtx.state === "suspended") audioCtx.resume();
+      const val = play ? 0.12 : 0;
+      mainGain.gain.linearRampToValueAtTime(val, audioCtx.currentTime + 1.5);
+    }
+
+    // Render UI
+    function render(){
+      // Names
+      document.getElementById("to-nickname").textContent = config.toNickname;
+      document.getElementById("message-subtitle").textContent = `To ${config.toName} · 2026`;
+      document.getElementById("signature").textContent = `From ${config.fromName}`;
+
+      // Greeting (exact text)
+      document.getElementById("greeting-text").textContent = config.greeting;
+
+      // Bias grid
+      const biasGrid = document.getElementById("bias-grid");
+      biasGrid.innerHTML = "";
+      config.bias.forEach((b) => {
+        const item = document.createElement("div");
+        item.className = "grid-item";
+        const nameStr = `<span lang="ko">${b.ko}</span> (<span lang="en">${b.en}</span>)`;
+        const img = getPlaceholder(b.en);
+        item.innerHTML = `<div class="img-box"><img src="${img}" alt="${b.en}"></div><div class="item-name">${nameStr}</div>`;
+        item.onclick = () => openLightbox(img, nameStr);
+        biasGrid.appendChild(item);
+      });
+
+      // Members grid
+      const membersGrid = document.getElementById("members-grid");
+      membersGrid.innerHTML = "";
+      config.members.forEach((m) => {
+        const item = document.createElement("div");
+        item.className = "grid-item";
+        const img = getPlaceholder(m, "#91A8D0", "#F7CAC9");
+        item.innerHTML = `<div class="img-box"><img src="${img}" alt="${m}"></div><div class="item-name">${m}</div>`;
+        item.onclick = () => openLightbox(img, m);
+        membersGrid.appendChild(item);
+      });
+
+      // Particles
+      const pContainer = document.getElementById("particle-container");
+      pContainer.innerHTML = "";
+      for(let i=0;i<30;i++){
+        const s = document.createElement("div");
+        s.className = "star";
+        const size = Math.random()*3 + 1;
+        Object.assign(s.style,{
+          width:`${size}px`, height:`${size}px`,
+          left:`${Math.random()*100}%`, top:`${Math.random()*100}%`,
+          animationDelay:`${Math.random()*5}s`, animationDuration:`${3 + Math.random()*2}s`
+        });
+        pContainer.appendChild(s);
+      }
+    }
+
+    // Interaction
+    const playBtn = document.getElementById("play-btn");
+    playBtn.addEventListener("pointerdown", async (e) => {
+      e.preventDefault();
+      playBtn.querySelector(".btn-text").classList.add("hidden");
+      playBtn.querySelector(".loader").classList.remove("hidden");
+
+      try{
+        toggleAudio(true);
+        const overlay = document.getElementById("overlay");
+        overlay.style.opacity = "0";
+        overlay.style.visibility = "hidden";
+        document.body.classList.remove("no-scroll");
+
+        const main = document.getElementById("main-content");
+        main.classList.remove("hidden");
+        setTimeout(() => main.classList.add("visible"), 100);
+
+        const music = document.getElementById("music-toggle");
+        music.classList.remove("hidden");
+        music.classList.add("playing");
+      }catch(err){
+        document.getElementById("retry-msg").classList.remove("hidden");
+        playBtn.querySelector(".btn-text").classList.remove("hidden");
+        playBtn.querySelector(".loader").classList.add("hidden");
+      }
+    });
+
+    document.getElementById("music-toggle").onclick = function(){
+      const playing = this.classList.toggle("playing");
+      toggleAudio(playing);
+    };
+
+    function openLightbox(src, caption){
+      document.getElementById("lightbox-img").src = src;
+      document.getElementById("lightbox-caption").innerHTML = caption;
+      document.getElementById("lightbox").style.display = "flex";
+    }
+    function closeLightbox(){
+      document.getElementById("lightbox").style.display = "none";
+    }
+    document.querySelector(".lightbox-close").onclick = closeLightbox;
+    document.getElementById("lightbox").onclick = (e) => {
+      if(e.target === document.getElementById("lightbox")) closeLightbox();
+    };
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") closeLightbox();
+    });
+
+    render();
+  </script>
+</body>
+</html>
