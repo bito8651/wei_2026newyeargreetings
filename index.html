@@ -211,6 +211,16 @@
       gap: 20px;
     }
 
+    /* 手機版：若某列只有一張，讓它置中（跨兩欄） */
+    @media (max-width: 899px) {
+      .members-row.single .grid-item {
+        grid-column: 1 / -1;      /* 跨滿兩欄 */
+        justify-self: center;     /* 置中 */
+        width: min(320px, 92%);   /* 不要太寬，視覺更好 */
+      }
+    }
+
+
     /* 桌機：套用 3-4-3-2-1 */
     @media (min-width: 900px) {
       .members-row.cols-3 { grid-template-columns: repeat(3, minmax(0, 180px)); }
@@ -230,7 +240,7 @@
 <body class="no-scroll">
   <div id="particle-container"></div>
 
-  <!-- ✅ 音樂：改成讀取你的檔案 -->
+  <!-- ✅ 音樂：改成讀取檔案 -->
   <audio id="bgm" src="assets/audio/bgm.mp3" preload="auto" loop></audio>
 
   <!-- Overlay -->
@@ -316,12 +326,28 @@
       fromName: "紂王思榆",
 
 
-      // 你的內文：完全不修改
+      // 卡片內文
       greeting: `消失了一年還能不放開我的人，非常的屈指可數。恭喜你留下來了，也謝謝你留下來。
-為了表達感謝與歉意，我把我手上堪能稱之為「禮物」的東西一一整理出來。你知道企鵝會從身邊挑一顆最合適的小石頭，送給真誠珍惜的朋友嗎？
-我把我身邊的「小石頭」整理好，當作不起眼的新年禮物，冀望我們未來能更好，然後我能再次開始正常社交。`,
 
-      // ✅ bias：改成讀你的 assets/images 檔案
+為了表達感謝與歉意，我把我手上堪能稱之為「禮物」的東西一一整理出來。你知道企鵝會從身邊挑一顆最合適的小石頭，送給真誠珍惜的朋友嗎？
+
+我把我身邊的「小石頭」整理好，當作不起眼的新年禮物，冀望我們未來能更好，然後我能再次開始正常社交。
+
+其實這段時間真的蠻難捱的，我自己都不太想承認（已罹患逃避癌末期）。很多時候也並非不想回訊息，是連「好好活著」都感覺奢侈。但你還是一直在，沒有逼我，也沒有離開。
+
+你就像我黑暗裡的一道曙光。不是那種dramatic的拯救，是四周諸暗時，回頭看到一點亮光的存在。在我困難的時候對我伸出援手的你，我一直都記著。
+
+雖然現在還沒有完全穩定下來，也還在把自己拼回的路上。但因為你，我會更認真一點。至少不能讓你後悔留下來吧（笑）。
+
+2026，希望這一年對你是明亮的，希望這一年對你是溫柔的，希望你被很多很多的愛包圍。願你做的每一個決定，都能慢慢發光。
+
+也希望我們可以趕快見面。不要再隔著螢幕說想你了，想真的坐在你旁邊，一起講幹話，一起笑，一起發花癡發癲。
+
+謝謝你在我最難的時候伸出手。
+新的一年，也請繼續陪我走一段路吧。`,
+
+
+      // ✅ bias：改成讀 assets/images 檔案
       bias: [
         { ko: "권순영", en: "Hoshi",     img: "assets/images/bias_hoshi_01.jpg" },
         { ko: "전원우", en: "Wonwoo",    img: "assets/images/bias_wonwoo_01.jpg" },
@@ -331,7 +357,7 @@
         { ko: "부승관", en: "Seungkwan", img: "assets/images/bias_seungkwan_01.jpg" }
       ],
 
-      // ✅ members：改成讀你的 assets/images 檔案
+      // ✅ members：改成讀 assets/images 檔案
       members: [
         { name: "S.Coups",   img: "assets/images/svt_scoups.jpg" },
         { name: "Jeonghan",  img: "assets/images/svt_jeonghan.jpg" },
@@ -437,6 +463,8 @@
       rowPattern.forEach((count) => {
         const row = document.createElement("div");
         row.className = `members-row cols-${count}`;
+        if (count === 1) row.classList.add("single");
+
 
         for (let i = 0; i < count; i++) {
           const m = config.members[idx++];
